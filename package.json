@@ -1,0 +1,25 @@
+{
+  "name": "moralis_test",
+  "version": "1.0.0",
+  "description": "Sample Framework for UI and API automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js test --config=cucumber.json || true",
+    "posttest": "npx ts-node tests/utils/reports.ts"
+  },
+  "keywords": [],
+  "author": "Shijith Kannoth",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "@playwright/test": "^1.45.2",
+    "dotenv": "^16.3.1",
+    "prettier": "^3.0.3",
+    "@types/node": "^20.14.11",
+    "ts-node": "^10.9.1",
+    "allure-commandline": "^2.25.0",
+    "allure-cucumberjs": "^2.9.2",
+    "allure-js-commons": "^2.5.0",
+    "allure-playwright": "^2.5.0"
+  }
+}
