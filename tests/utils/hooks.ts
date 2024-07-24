@@ -10,7 +10,6 @@ let context: BrowserContext
 let loginPage = new LoginPage()
 
 BeforeAll(async function () {
-    console.log(' I am here')
     browser = await chromium.launch({ headless: false })
     process.env.URI = 'https://admin.moralis.io/login'
     context = await browser.newContext()
@@ -23,21 +22,10 @@ BeforeAll(async function () {
     await loginPage.email().fill('shijith.ssn@gmail.com')
     await loginPage.password().fill('Todayis@44')
     await loginPage.submitButton().click()
-    try {
-        await pageFixture.page.locator('//*[@class="recaptcha-checkbox-checkmark"]').click()
-        await loginPage.submitButton().click()
-    } catch (error) {
-        // if (await loginPage.submitButton().isVisible()) {
-        //     loginPage.submitButton().click()
-        // }
-        await loginPage.submitButton().click()
-    }
-    await pageFixture.page.getByTitle('Home').click()
-    await pageFixture.page.waitForTimeout(4000)
+    await pageFixture.page.waitForTimeout(2000)
 })
 
 Before(async function () {
-    console.log('isdie the before only')
     await pageFixture.page.goto('https://admin.moralis.io');
     await pageFixture.page.waitForTimeout(2000)
 

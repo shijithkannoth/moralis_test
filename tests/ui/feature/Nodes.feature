@@ -9,7 +9,7 @@ Feature: This is sample feature file to automate the moralis automation test tas
     Then I verify the API using  "<id>" "<method>" new node url
     Then I validate the getTransactionByHash endpoint with new node url
     Then I validate the blockNumber endpoint with newly created node
-    # Then I validate the API with inputs
+    Then I validate the API with inputs
 
     Examples:
       | protocol | network | id | method               |
@@ -25,6 +25,12 @@ Feature: This is sample feature file to automate the moralis automation test tas
     Then I get the API Key from portal
     Then I request NFT endpoint with incorrect address to validate response address not valid
     Then I request NFT endpoint with incorrect apieky to validate inorrect token in response messsage
+
+  Scenario: Validate the endpoints ((blockNumber, getBlockByNumber, getTransactionByHash) with incorrect data
+    Given I get the api key from node url
+    Then I validate blockNumber endpoint with incorrect inputs
+    Then I validate getTransactionByHash endpoint with incorrect inputs
+    Then I validate getBlockByNumber endpoint with incorrect inputs
 
 
 

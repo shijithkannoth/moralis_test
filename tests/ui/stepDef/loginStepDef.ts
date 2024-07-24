@@ -31,9 +31,6 @@ When('I click on the create node button', async function () {
             await button.click()
             await dashboardPage.confirmDelete().click()
         }
-
-    } else {
-        console.log('Take the action')
     }
     await dashboardPage.createNewNode().click()
     await pageFixture.page.waitForTimeout(1000)
@@ -41,9 +38,8 @@ When('I click on the create node button', async function () {
 });
 
 Then('I should be able to see the create new node page', async function () {
-    console.log('The Node button is Visible', await dashboardPage.createNodeButton().isVisible())
+    await dashboardPage.createNodeButton().isVisible()
     await pageFixture.page.waitForTimeout(2000)
-
 
 });
 
@@ -64,7 +60,6 @@ Then('I click on Create node and should see new node created', async () => {
         const trText = await pageFixture.page.evaluate(el => el.getAttribute('value'), tr);
         api_uri.push(trText!)
     }
-    console.log('The Node URL Created ', api_uri.length)
 })
 
 Then('I verify the API using  {string} {string} new node url', async (id, methodName) => {
@@ -94,10 +89,9 @@ Then('I verify the API using  {string} {string} new node url', async (id, method
 })
 
 Then('I get the API Key from portal', async () => {
-    await pageFixture.page.waitForTimeout(2000)
+    await pageFixture.page.waitForTimeout(1000)
     const api_key = await dashboardPage.apiKey().getAttribute('id')!
     process.env.API_KEY = api_key!
-    console.log(process.env.API_KEY)
 
 })
 
@@ -118,7 +112,6 @@ Then('I validate the API with inputs', async function () {
             ]
         }
     });
-    console.log(response.status())
 });
 
 
@@ -139,7 +132,6 @@ Then('I validate the getTransactionByHash endpoint with new node url', async fun
         }
     });
 
-    console.log(response.status())
     const data = await response.json()
     expect(data.jsonrpc == 'string')
     expect(data.result != null)
@@ -161,8 +153,6 @@ Then('I validate the blockNumber endpoint with newly created node', async () => 
             "method": "eth_blockNumber",
         }
     });
-
-    console.log('Get BlockNumber', response.status())
     const data = await response.json()
     expect(data.jsonrpc != null)
     expect(data.id == 1 && data.id != null)
@@ -243,4 +233,122 @@ When('I request NFT endpoint with incorrect address to validate response address
     let responseData = await response.json()
     expect(response.status() == 400);
     expect(responseData.message.includes('is not a valid hex address'))
+})
+
+Given('I get the api key from node url', async () => {
+    await dashboardPage.nodes().click()
+    await dashboardPage.newNode().click()
+    await pageFixture.page.waitForTimeout(1000)
+    const selectors = await pageFixture.page.$$('//*[@data-testid="mui-input"]');
+    for (let tr of selectors) {
+        const trText = await pageFixture.page.evaluate(el => el.getAttribute('value'), tr);
+        api_uri.push(trText!)
+    }
+})
+
+
+Then('I validate blockNumber endpoint with incorrect inputs', async () => {
+    const apiRequestContext = await request.newContext({});
+    const response = await apiRequestContext.post(api_uri[1] + "incorrect", {
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json"
+        },
+        data: {
+            "jsonrpc": "2.0",
+            "params": [
+                "latest",
+                true
+            ],
+            "id": "1",
+            "method": "eth_getBlockByNumber"
+        }
+    });
+    let responseData = await response.json()
+    expect(response.status() == 401);
+    expect(responseData.message).toContain('Token is invalid format')
+    const response_ = await apiRequestContext.post(api_uri[1], {
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json"
+        },
+        data: {
+            "jsonrpc": "2.0",
+            "params": [
+                "latest",
+                true
+            ],
+            "id": "1",
+            "method": "incorrect_name"
+        }
+    });
+    let responseData_ = await response_.json()
+    expect(response_.status()).toBe(400);
+    expect(responseData_.message).toContain('is not supported on chain')
+
+})
+
+Then('I validate getTransactionByHash endpoint with incorrect inputs', async () => {
+    const apiRequestContext = await request.newContext({});
+    const uri = api_uri[1].replace(/.$/, "a")
+    const response = await apiRequestContext.post(uri, {
+        data: {
+            "jsonrpc": "2.0",
+            "id": 1.0,
+            "method": "eth_getTransactionByHash",
+            "params": [
+                "0x18173058d45f8aa984181fdfbfece01a93a971ea63e008231b2e15f151e0903f"
+            ]
+        }
+    });
+    let responseData = await response.json()
+    expect(response.status() == 401);
+    expect(responseData.message).toContain('Node Key not valid')
+    const response_ = await apiRequestContext.post(api_uri[1], {
+        data: {
+            "jsonrpc": "2.0",
+            "id": 1.0,
+            "method": "getTransactionByHash",
+            "params": [
+                "0x18173058d45f8aa984181fdfbfece01a93a971ea63e008231b2e15f151e0903f"
+            ]
+        }
+    });
+    let responseData_ = await response_.json()
+    expect(response_.status()).toBe(400);
+    expect(responseData_.message).toContain('is not supported on chain')
+})
+
+
+Then('I validate getBlockByNumber endpoint with incorrect inputs', async () => {
+    const apiRequestContext = await request.newContext({});
+    let uri = api_uri[1].replace(/.$/, "z")
+    const response = await apiRequestContext.post(uri, {
+        data: {
+            "jsonrpc": "2.0",
+            "params": [
+                "latest",
+                true
+            ],
+            "id": "1",
+            "method": "eth_getBlockBNumber"
+        }
+    });
+    let responseData = await response.json()
+    expect(response.status()).toBe(401);
+    expect(responseData.message).toContain('Token is invalid format')
+    const response1 = await apiRequestContext.post(api_uri[1], {
+        data: {
+            "jsonrpc": "2.0",
+            "params": [
+                "latest",
+                true
+            ],
+            "id": "1",
+            "method": "getBlockBNumber"
+        }
+    });
+    let responseData1 = await response1.json()
+    expect(response1.status()).toBe(400);
+    expect(responseData1.message).toContain('is not supported on chain')
 })

@@ -1,13 +1,13 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master ] # Run the script on each commit
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master ] # Run the script on pull request for the branch
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # the runner name for the job to tun
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
