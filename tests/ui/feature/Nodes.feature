@@ -26,7 +26,7 @@ Feature: This is sample feature file to automate the moralis automation test tas
     Then I request NFT endpoint with incorrect address to validate response address not valid
     Then I request NFT endpoint with incorrect apieky to validate inorrect token in response messsage
 
-  Scenario: Validate the endpoints ((blockNumber, getBlockByNumber, getTransactionByHash) with incorrect data
+  Scenario: Validate the endpoints (blockNumber, getBlockByNumber, getTransactionByHash) with incorrect data
     Given I get the api key from node url
     Then I validate blockNumber endpoint with incorrect inputs
     Then I validate getTransactionByHash endpoint with incorrect inputs
