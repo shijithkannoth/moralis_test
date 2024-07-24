@@ -3,7 +3,7 @@ import { Browser, BrowserContext, Page, chromium } from "@playwright/test";
 import { pageFixture } from "./pagefixture"
 import LoginPage from "../ui/page/loginPage";
 import DashboardPage from "../ui/page/dashboardPage";
-
+require('dotenv').config()
 
 let browser: Browser
 let context: BrowserContext
@@ -16,11 +16,11 @@ BeforeAll(async function () {
     context.browser()
     const page = await context.newPage()
     pageFixture.page = page
-    await page.goto(process.env.URI)
+    await page.goto(process.env.URL!)
     await page.waitForTimeout(1000)
     await loginPage.acceptCookies().click()
-    await loginPage.email().fill('shijith.ssn@gmail.com')
-    await loginPage.password().fill('Todayis@44')
+    await loginPage.email().fill(process.env.USERNAME!)
+    await loginPage.password().fill(process.env.PASSWORD!)
     await loginPage.submitButton().click()
     await pageFixture.page.waitForTimeout(2000)
 })
