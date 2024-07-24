@@ -2,6 +2,7 @@ import { After, AfterAll, AfterStep, Before, BeforeAll, Status } from "@cucumber
 import { Browser, BrowserContext, Page, chromium } from "@playwright/test";
 import { pageFixture } from "./pagefixture"
 import LoginPage from "../ui/page/loginPage";
+import DashboardPage from "../ui/page/dashboardPage";
 
 
 let browser: Browser
@@ -19,23 +20,26 @@ BeforeAll(async function () {
     await page.goto(process.env.URI)
     await page.waitForTimeout(1000)
     await loginPage.acceptCookies().click()
-    await page.waitForTimeout(1000)
-
     await loginPage.email().fill('shijith.ssn@gmail.com')
     await loginPage.password().fill('Todayis@44')
-    //await loginPage.submitButton().click()
-    await pageFixture.page.waitForTimeout(3000)
-    // try {
-    //     // await pageFixture.page.locator('//*[@class="recaptcha-checkbox-checkmark"]').click()
-    // } catch (error) {
-    //     console.log('There is no captcha')
-    // }
     await loginPage.submitButton().click()
-    await pageFixture.page.waitForTimeout(2000)
+    try {
+        await pageFixture.page.locator('//*[@class="recaptcha-checkbox-checkmark"]').click()
+        await loginPage.submitButton().click()
+    } catch (error) {
+        // if (await loginPage.submitButton().isVisible()) {
+        //     loginPage.submitButton().click()
+        // }
+        await loginPage.submitButton().click()
+    }
+    await pageFixture.page.getByTitle('Home').click()
+    await pageFixture.page.waitForTimeout(4000)
 })
 
 Before(async function () {
+    console.log('isdie the before only')
     await pageFixture.page.goto('https://admin.moralis.io');
+    await pageFixture.page.waitForTimeout(2000)
 
 })
 

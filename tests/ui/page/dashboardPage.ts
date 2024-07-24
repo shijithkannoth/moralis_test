@@ -33,5 +33,9 @@ export default class DashboardPage {
         return pageFixture.page.locator('//*[text()="Ethereum"]')
     }
 
+    apiKey() {
+        return pageFixture.page.locator('//*[@type="password"]')
+    }
+
 
 }
