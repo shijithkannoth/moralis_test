@@ -6,3 +6,5 @@ node_modules/
 .idea
 .vscode
 .env
+tests/k6/summary.html
+tests/k6/output.json
