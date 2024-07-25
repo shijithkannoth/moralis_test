@@ -27,5 +27,10 @@ This repo is sample automation framework for GUI and API testing using playwrigh
 ## Running the test
     k6 run nft.js --out json=output.json --env API_KEY="your api key"
 ### Results:
-    html report is generated in the k6 directory (tests/k6/summary.html)      
+    html report is generated in the k6 directory (tests/k6/summary.html)    
+
+### Running the tests on CI
+
+    To run the test in CI need to configure the git secrets as mentioned in the workflow
+    Update the runner details. 
     
