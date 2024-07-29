@@ -12,8 +12,12 @@ This repo is sample automation framework for GUI and API testing using playwrigh
     To run the automation testing we need the npm and node installed >20
     To run the UI test default browser google chrome/chromium should be available
 
-## setup
+## setup:
     npm install
+
+## Running the tests:
+    npm run test   
+     
 ## Report:
     html report is generated with screenshots for failed cases under test-results folder    
 
