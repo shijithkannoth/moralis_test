@@ -4,8 +4,7 @@
   "description": "Sample Framework for UI and API automation",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js test --config=cucumber.json || true",
-    "posttest": "npx ts-node tests/reports/reports.ts"
+    "test": "cucumber-js test --config=cucumber.json || true"
   },
   "keywords": [],
   "author": "Shijith Kannoth",
